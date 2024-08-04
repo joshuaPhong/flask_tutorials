@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{# create logout page#}
+{% block content %}
+	<div class = "content-section">
+		<form action = "/logout"
+			  method = "POST">
+			{{ form.hidden_tag() }}
+			{{ form.submit }}
+		</form>
+		<div>
+			{% if error %}
+				<div class = "alert alert-danger">
+					{{ error }}
+				</div>
+			{% endif %}
+		</div>
+	</div>
+
+{% endblock content %}

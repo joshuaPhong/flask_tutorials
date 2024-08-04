@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{# create registration page#}
+{% block content %}
+	<div class = "content-section">
+		<form action = "/register"
+			  method = "POST">
+			{{ form.hidden_tag() }}
+			{{ form.csrf_token }}
+			{{ form.username.label }}
+			{{ form.username }}
+			{{ form.email.label }}
+			{{ form.email }}
+			{{ form.password.label }}
+			{{ form.password }}
+			{{ form.confirm_password.label }}
+			{{ form.confirm_password }}
+			{{ form.submit }}
+		</form>
+	</div>
+	<div>
+		<p>Already have an account? <a href = "{{ url_for('login') }}">Login</a>Login</p>
+	</div>
+{% endblock content %}
