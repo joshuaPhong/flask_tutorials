@@ -12,7 +12,8 @@
 		  crossorigin = "anonymous">
 	<link rel = "stylesheet"
 		  type = "text/css"
-		  href = "{{ url_for("static", filename="style.css") }}">
+		  href = "{{ url_for('static', filename='style.css') }}">
+
 	{% if title %}
 		<title>My Flask App - {{ title }}</title>
 	{% else %}
@@ -28,41 +29,48 @@
 	<h1 class = "text-center">Welcome to the {{ page }} Page!</h1>
 </div>
 
-
 <main role = "main"
 	  class = "container-fluid">
 	<div class = "row">
-		<div class = "col-8">
-			{% with messages = get_flashed_messages(with_categories=true) %}
-				{% if messages %}
-					{% for category, message in messages %}
-						<div class = "alert alert-{{ category }}">
-							{{ message }}
-						</div>
-					{% endfor %}
-				{% endif %}
-			{% endwith %}
-			<div class = "alert alert-dismissible alert-info">
-				{% for category, message in messages %}
-					<div class = "alert alert-{{ category }}">
-						{{ message }}
-					</div>
-				{% endfor %}
-				{% block content %}{% endblock %}</div>
-			<div class = "col-4">{% include "sidebar.html" %}</div>
+		<div class = "col-md-8">
+			<div id = "flash-time-out">
+				{# flash messages #}
+				{% with messages = get_flashed_messages(with_categories=true) %}
+					{% if messages %}
+						{% for category, message in messages %}
+							<div class = "alert alert-{{ category }}">
+								{{ message }}
+							</div>
+						{% endfor %}
+					{% endif %}
+				{% endwith %}
+			</div>
+
+			<div class = "container-fluid border-1">
+				{% block content %}{% endblock %}
+			</div>
 		</div>
+		<div class = "col-md-4">
+			{% include "sidebar.html" %}
+		</div>
+	</div>
 </main>
 
-
 {# bootstrap javascript #}
-<script src = "https://code.jquery.com/jquery-3.2.1.slim.min.js"
-		integrity = "sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-		crossorigin = "anonymous"></script>
+<script src = "https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src = "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-		integrity = "sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		integrity = "sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7HUiUB39j7fakFPskvXusvfa0b4Q"
 		crossorigin = "anonymous"></script>
 <script src = "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
 		integrity = "sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 		crossorigin = "anonymous"></script>
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            $("#flash-time-out").fadeOut(1000);
+        }, 5000); // 5 seconds delay
+    });
+</script>
+
 </body>
 </html>

@@ -2,14 +2,17 @@
 
 {{ form.email.label }}
 {% block content %}
-	<form action = "/login"
-		  method = "post">
-		{{ form.hidden_tag() }}
-		{{ form.email.label }}
-		{{ form.email }}
-		{{ form.password.label }}
-		{{ form.password }}
-		{{ form.submit }}
-		<p>Don't have an account? <a href = "{{ url_for('register') }}">Register</a>Register</p>
-	</form>
+	<div class = "content-section">
+
+		<form action = "/login"
+			  method = "post">
+			{{ form.hidden_tag() }}
+			{{ form.email.label }}
+			{{ form.email }}
+			{{ form.password.label }}
+			{{ form.password }}
+			{{ form.submit }}
+			<p>Don't have an account? <a href = "{{ url_for('register') }}">Register</a>Register</p>
+		</form>
+	</div>
 {% endblock content %}

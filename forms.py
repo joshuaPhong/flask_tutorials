@@ -32,3 +32,9 @@ class LoginForm(FlaskForm):
 
 class LogoutForm(FlaskForm):
     submit = SubmitField("Logout")
+
+
+class CreatePostForm(FlaskForm):
+    title = StringField("Title", [DataRequired()])
+    content = StringField("Content", [DataRequired()])
+    submit = SubmitField("Post")
