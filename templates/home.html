@@ -16,11 +16,17 @@
 						<small class = "text-muted">{{ post.date_posted }}</small>
 					</div>
 					<h2><a class = "article-title"
-						   href = "#">{{ post.title }}</a></h2>
+						   href = "{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
 					<p class = "article-content">{{ post.content }}</p>
+				</div>
+				{#			CREATE DIV TO AN ANCHOR TAG THAT POINTS TO THE POST_ID#}
+				<div class = "article-metadata">
+					<a class = "mr-2 btn btn-outline-secondary"
+					   href = "{{ url_for('post', post_id=post.id) }}">Read More</a>
 				</div>
 			</article>
 		{% endfor %}
+
 	{% else %}
 		<div class = "container">
 			<div class = "alert alert-info"
