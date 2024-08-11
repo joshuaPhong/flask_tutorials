@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+	{#	check user is logged in. Show page if is logged in. Flash message to login if not logged in#}
+	{% if current_user.is_authenticated %}
+
+		<!-- You can put more of your home page content here -->
+		{#		{% for post in posts %}#}
+		{#    	print the post title and content#}
+		<article class = "media content-section">
+			<div class = "media-body">
+				<div class = "article-metadata">
+					<a class = "mr-2"
+					   href = "#">{{ post.author.username }}</a>
+					<small class = "text-muted">{{ post.date_posted }}</small>
+					<small class = "text-muted">Post id: {{ post.id }}</small>
+				</div>
+				<h2><a class = "article-title"
+					   href = "#">{{ post.title }}</a></h2>
+				<p class = "article-content">{{ post.content }}</p>
+			</div>
+			{#		 add a link to the posts page in a btn #}
+			<a class = "mr-2 btn btn-outline-secondary"
+			   href = "{{ url_for('home') }}">Back to all Posts</a>
+		</article>
+		{#		{% endfor %}#}
+	{% else %}
+		<div class = "container">
+			<div class = "alert alert-info"
+				 role = "alert">
+				<p class = "mb-0">Please login to view this page</p>
+			</div>
+		</div>
+	{% endif %}
+{% endblock content %}
