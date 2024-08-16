@@ -17,6 +17,7 @@ class User(db.Model, UserMixin):
     __tablename__ = "user"
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(unique=True)
+    profile_picture: Mapped[str] = mapped_column(default="default.jpg", nullable=True)
     email: Mapped[str] = mapped_column(unique=True)
     password: Mapped[str] = mapped_column()
     posts: Mapped[list["Posts"]] = relationship("Posts", backref="author", lazy=True)
