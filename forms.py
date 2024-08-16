@@ -38,3 +38,11 @@ class CreatePostForm(FlaskForm):
     title = StringField("Title", [DataRequired()])
     content = StringField("Content", [DataRequired()])
     submit = SubmitField("Post")
+
+
+# form for the update user profile/ user profile page
+class UpdateProfileForm(FlaskForm):
+    username = StringField("Username", [DataRequired()])
+    email = EmailField("Email Address", [DataRequired(), Email()])
+    profile_picture = StringField("Profile Picture")
+    submit = SubmitField("Update")
