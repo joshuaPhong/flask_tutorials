@@ -8,8 +8,14 @@
 		<!-- You can put more of your home page content here -->
 		{% for post in posts %}
 			{#    	print the post title and content#}
+
 			<article class = "media content-section">
 				<div class = "media-body">
+					<div class = "article-img">
+						<img src = "{{ url_for('static', filename='profile_pictures/' + current_user.profile_picture) }}"
+							 alt = "profile picture"
+							 class = "rounded-circle article-img">
+					</div>
 					<div class = "article-metadata">
 						<a class = "mr-2"
 						   href = "#">{{ post.author.email }}</a>
