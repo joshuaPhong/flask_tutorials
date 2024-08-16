@@ -12,7 +12,7 @@
 			<div class = "media-body">
 				<div class = "article-metadata">
 					<a class = "mr-2"
-					   href = "#">{{ post.author.username }}</a>
+					   href = "#">{{ post.author.email }}</a>
 					<small class = "text-muted">{{ post.date_posted }}</small>
 					<small class = "text-muted">Post id: {{ post.id }}</small>
 				</div>
@@ -23,6 +23,16 @@
 			{#		 add a link to the posts page in a btn #}
 			<a class = "mr-2 btn btn-outline-secondary"
 			   href = "{{ url_for('home') }}">Back to all Posts</a>
+			{#		add alink as a btn to update the post #}
+			<a class = "mr-2 btn btn-outline-secondary"
+			   href = "{{ url_for('update_post', post_id = post.id) }}">Update Post</a>
+			{#		add a link btn for delete post #}
+			{#			<a class = "mr-2 btn btn-outline-secondary"#}
+			{#			   href = "{{ url_for('delete_post', post_id = post.id) }}">Delete Post</a>#}
+			<!-- In post.html -->
+			<a class = "mr-2 btn btn-outline-secondary"
+			   href = "javascript:void(0);"
+			   onclick = "confirmDelete({{ post.id }})">Delete Post</a>
 		</article>
 		{#		{% endfor %}#}
 	{% else %}
