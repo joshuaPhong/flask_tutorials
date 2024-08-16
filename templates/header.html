@@ -21,6 +21,8 @@
 					   href = "{{ url_for("about") }}">About</a>
 					<a class = "nav-item nav-link"
 					   href = "{{ url_for("create_post") }}">Create Post</a>
+					{#					<a class = "nav-item nav-link"#}
+					{#					   href = "{{ url_for("update_post", post_id=post.id) }}">Update Post</a>#}
 				</div>
 				<!-- Navbar Right Side -->
 				<div class = "navbar-nav">
@@ -30,6 +32,11 @@
 					   href = "{{ url_for("register") }}">Register</a>
 					<a class = "nav-item nav-link"
 					   href = "{{ url_for("logout") }}">Logout</a>
+
+					<a class = "nav-item nav-link"
+					   href = "{{ url_for("profile") }}"><img class = "rounded-circle account-img"
+															  src = "{{ url_for('static', filename='profile_pictures/' + current_user.profile_picture) }}"
+															  alt = "Profile Picture"></a>
 				</div>
 			</div>
 		</div>
