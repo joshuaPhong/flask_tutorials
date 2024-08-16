@@ -192,7 +192,13 @@ from flask_login import (
     current_user,
 )
 from flask_migrate import Migrate
-from forms import RegistrationForm, LoginForm, LogoutForm, CreatePostForm
+from forms import (
+    RegistrationForm,
+    LoginForm,
+    LogoutForm,
+    CreatePostForm,
+    UpdateProfileForm,
+)
 from models import db, User, Posts
 from flask_dotenv import DotEnv
 
@@ -237,50 +243,6 @@ def home():
     user_posts = Posts.query.all()
     # Render the home template with the posts
     return render_template("home.html", posts=user_posts, title="Home", page="home")
-
-
-# Route for viewing an individual post
-@app.route("/post/<int:post_id>")
-def post(post_id):
-    # Query the post by ID or return 404 if not found
-    post = Posts.query.get_or_404(post_id)
-    # Render the post template with the post data
-    return render_template("post.html", title=post.title, post=post)
-
-
-# Route for viewing all posts
-@app.route("/posts")
-def posts():
-    # Query all posts from the database
-    all_posts = Posts.query.all()
-    # Render the posts template with all posts
-    return render_template("posts.html", title="All Posts", posts=all_posts)
-
-
-# Route for updating a post
-@app.route("/post/<int:post_id>/update", methods=["GET", "POST"])
-@login_required
-def update_post(post_id):
-    # Query the post by ID or return 404 if not found
-    post = Posts.query.get_or_404(post_id)
-    # Check if the current user is the author of the post
-    if post.author != current_user:
-        flash("You are not authorized to update this post", "danger")
-        return redirect(url_for("home"))
-    form = CreatePostForm()
-    # If the form is submitted and validated, update the post
-    if form.validate_on_submit():
-        post.title = form.title.data
-        post.content = form.content.data
-        db.session.commit()
-        flash("Your post has been updated!", "success")
-        return redirect(url_for("post", post_id=post.id))
-    # If the request method is GET, pre-fill the form with the current post data
-    elif request.method == "GET":
-        form.title.data = post.title
-        form.content.data = post.content
-    # Render the create_post template with the form
-    return render_template("create_post.html", title="Update Post", form=form)
 
 
 # Route for the about page
@@ -390,6 +352,85 @@ def create_post():
         title="Create Post",
         page="create_post",
         form=form,
+    )
+
+
+# Route for viewing an individual post
+@app.route("/post/<int:post_id>")
+def post(post_id):
+    # Query the post by ID or return 404 if not found
+    post = Posts.query.get_or_404(post_id)
+    # Render the post template with the post data
+    return render_template("post.html", title=post.title, post=post, page="post")
+
+
+# Route for viewing all posts
+@app.route("/posts")
+def posts():
+    # Query all posts from the database
+    all_posts = Posts.query.all()
+    # Render the posts template with all posts
+    return render_template("posts.html", title="All Posts", posts=all_posts)
+
+
+# Route for updating a post
+@app.route("/post/<int:post_id>/update", methods=["GET", "POST"])
+@login_required
+def update_post(post_id):
+    # Query the post by ID or return 404 if not found
+    post = Posts.query.get_or_404(post_id)
+    # Check if the current user is the author of the post
+    if post.author != current_user:
+        flash("You are not authorized to update this post", "danger")
+        return redirect(url_for("home"))
+    form = CreatePostForm()
+    # If the form is submitted and validated, update the post
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+        flash("Your post has been updated!", "success")
+        return redirect(url_for("post", post_id=post.id))
+    # If the request method is GET, pre-fill the form with the current post data
+    elif request.method == "GET":
+        form.title.data = post.title
+        form.content.data = post.content
+    # Render the create_post template with the form
+    return render_template(
+        "update_post.html", title="Update Post", form=form, post=post
+    )
+
+
+# route to delete a post
+@app.route("/post/<int:post_id>/delete", methods=["GET", "POST"])
+@login_required
+def delete_post(post_id):
+    post = Posts.query.get_or_404(post_id)
+    if post.author != current_user:
+        flash("You are not authorized to delete this post", "danger")
+        return redirect(url_for("home"))
+    db.session.delete(post)
+    db.session.commit()
+    flash("Your post has been deleted!", "success")
+    return redirect(url_for("home"))
+
+
+# user profile route, show and update user profile
+@app.route("/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+    form = UpdateProfileForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash("Your account has been updated!", "success")
+        return redirect(url_for("home"))
+    elif request.method == "GET":
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    return render_template(
+        "user_profile_page.html", title="Profile", form=form, page="profile"
     )
 
 
